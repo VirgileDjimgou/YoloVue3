@@ -1,5 +1,5 @@
-.App {
-  height: 100%;
+.app {
+  height: 100vh;
   padding: 0 10px;
   position: relative;
   display: flex;
@@ -8,7 +8,7 @@
   align-items: center;
 }
 
-.App > * {
+.app > * {
   margin: 3px 0;
 }
 
@@ -27,24 +27,32 @@
   border-radius: 5px;
 }
 
-.content > img {
-  display: none;
+.content {
+  position: relative;
   width: 100%;
   max-width: 720px;
   max-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content > img,
+.content > video {
+  width: 100%;
+  height: auto;
+  max-width: 720px;
+  max-height: 500px;
   border-radius: 10px;
+  display: block;
+}
+
+.content > img {
+  display: none;
 }
 
 .content > video {
   display: none;
-  width: 100%;
-  max-width: 720px;
-  max-height: 500px;
-  border-radius: 10px;
-}
-
-.content {
-  position: relative;
 }
 
 .content > canvas {
@@ -53,6 +61,8 @@
   left: 0;
   width: 100%;
   height: 100%;
+  border-radius: 10px;
+  pointer-events: none;
 }
 
 button {

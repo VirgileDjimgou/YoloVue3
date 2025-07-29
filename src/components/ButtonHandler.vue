@@ -13,7 +13,8 @@ import { Webcam } from '../utils/webcam.js';
 const props = defineProps({
   imageRef: Object,
   cameraRef: Object,
-  videoRef: Object
+  videoRef: Object,
+  onImageLoad: Function
 });
 const streaming = ref(null);
 const fileInput = ref(null);
@@ -28,15 +29,36 @@ function onImageChange(e) {
   if (!file) return;
   const url = URL.createObjectURL(file);
   props.imageRef.src = url;
+  
+  // Afficher l'image et masquer la vidéo
+  props.imageRef.style.display = 'block';
+  props.cameraRef.style.display = 'none';
+  
   streaming.value = 'image';
+  
+  // Déclencher la détection une fois l'image chargée
+  props.imageRef.onload = () => {
+    if (props.onImageLoad) {
+      props.onImageLoad();
+    }
+  };
 }
 
 function toggleCamera() {
   if (streaming.value === 'camera') {
     webcam.close(props.cameraRef);
+    
+    // Masquer la vidéo
+    props.cameraRef.style.display = 'none';
+    
     streaming.value = null;
   } else {
     webcam.open(props.cameraRef);
+    
+    // Afficher la vidéo et masquer l'image
+    props.cameraRef.style.display = 'block';
+    props.imageRef.style.display = 'none';
+    
     streaming.value = 'camera';
   }
 }

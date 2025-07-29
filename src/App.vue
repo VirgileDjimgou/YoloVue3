@@ -1,10 +1,12 @@
 <template>
   <div class="app">
     <Loader v-if="loading">Loading model... {{ progress }}%</Loader>
-    <video ref="video" class="overlay" autoplay muted playsinline @play="onVideoPlay" />
-    <canvas ref="canvas" class="overlay" />
-    <img ref="image" class="overlay" />
-    <ButtonHandler :imageRef="image" :cameraRef="video" />
+    <div class="content">
+      <video ref="video" class="overlay" autoplay muted playsinline @play="onVideoPlay" />
+      <canvas ref="canvas" class="overlay" />
+      <img ref="image" class="overlay" @load="onImageLoad" />
+    </div>
+    <ButtonHandler :imageRef="image" :cameraRef="video" :onImageLoad="onImageLoad" />
   </div>
 </template>
 
@@ -41,6 +43,13 @@ async function onVideoPlay() {
   canvas.value.width = video.value.videoWidth;
   canvas.value.height = video.value.videoHeight;
   detectVideo(video.value, model, canvas.value);
+}
+
+// Fonction pour détecter les objets sur une image
+async function onImageLoad() {
+  canvas.value.width = image.value.width;
+  canvas.value.height = image.value.height;
+  detect(image.value, model, canvas.value);
 }
 
 onMounted(async () => {
